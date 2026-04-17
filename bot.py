@@ -11,7 +11,8 @@ from telegram import (
     InlineKeyboardMarkup,
     Update,
 )
-from telegram.constants import ChatType, ParseMode
+from telegram.constants import ParseMode
+from telegram import Chat
 from telegram.ext import (
     Application,
     ApplicationBuilder,
@@ -459,7 +460,7 @@ def escape(text: str) -> str:
 def only_private(update: Update) -> bool:
     message = update.effective_message
     chat = update.effective_chat
-    return bool(message and chat and chat.type == ChatType.PRIVATE)
+    return bool(message and chat and chat.type == Chat.PRIVATE)
 
 
 def format_dt(dt: datetime) -> str:
@@ -913,7 +914,7 @@ async def callbacks(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     query = update.callback_query
     await query.answer()
 
-    if not update.effective_chat or update.effective_chat.type != ChatType.PRIVATE:
+    if not update.effective_chat or update.effective_chat.type != Chat.PRIVATE:
         return
 
     user_id = query.from_user.id
